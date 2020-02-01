@@ -7,7 +7,7 @@ namespace Isen.Dotnet.Library.Context
     public class ApplicationDbContext : DbContext
     {        
         // Listes des classes modèle / tables
-        public DbSet<Personne> PersonCollection { get; set; }
+        public DbSet<Personne> PersonneCollection { get; set; }
         public DbSet<Service> ServiceCollection { get; set; }
         public DbSet<Role> RoleCollection { get; set; }
         public ApplicationDbContext(
