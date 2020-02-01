@@ -28,7 +28,7 @@ namespace Isen.Dotnet.Library.Model
         
         public override string ToString() =>
             $"{Nom} {Prenom} | {Date_anniversaire} ({Age}) | {TypeRole} / {TypeService}";
-        
+    
     }
 
 }
