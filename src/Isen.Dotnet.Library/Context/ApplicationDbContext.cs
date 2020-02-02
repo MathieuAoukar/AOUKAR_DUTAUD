@@ -31,7 +31,7 @@ namespace Isen.Dotnet.Library.Context
                 .Entity<Personne>()
                 .HasOne(p => p.TypeService)
                 .WithMany()
-                .HasForeignKey(p => p.TypeRoleId);
+                .HasForeignKey(p => p.TypeServiceId);
 
             modelBuilder
                 .Entity<Personne>()

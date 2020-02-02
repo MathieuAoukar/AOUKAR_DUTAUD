@@ -6,12 +6,13 @@ namespace Isen.Dotnet.Library.Model
     {
         public string NomRole {get;set;}
         
-        /*public Personne Personne {get;set;}
-        public int? PersonneId {get;set;}*/
+        public override string ToString() => $"{NomRole}";
 
+        /*
         public MyCollection<RelationRolePersonne> RelationRolePersonne {get;set;}
+        public override string ToString() => NomRole;
 
-         public string Persons() {
+         public string Personne() {
             var sb = new StringBuilder();
             sb.Append($"{RelationRolePersonne[0]?.Personne?.Prenom} {RelationRolePersonne[0]?.Personne?.Nom}");
             for(var i = 1; i < RelationRolePersonne?.Count; i++)
@@ -20,7 +21,7 @@ namespace Isen.Dotnet.Library.Model
                 sb.Append($"{RelationRolePersonne[i]?.Personne?.Prenom} {RelationRolePersonne[i]?.Personne?.Nom}");
             }
             return sb.ToString();
-        }
+        }*/
 
     }
 }

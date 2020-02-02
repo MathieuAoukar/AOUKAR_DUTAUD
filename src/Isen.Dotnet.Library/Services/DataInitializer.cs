@@ -58,13 +58,17 @@ namespace Isen.Dotnet.Library.Services
         }
 
         // Générateur de prénom
-        private string RandomFirstName => _firstNames[_random.Next(_firstNames.Count)];
+        private string RandomFirstName => 
+            _firstNames[_random.Next(_firstNames.Count)];
         // Générateur de nom
-        private string RandomLastName => _lastNames[_random.Next(_lastNames.Count)];
+        private string RandomLastName => 
+            _lastNames[_random.Next(_lastNames.Count)];
 
-        private string RandomTelephone => "06" + _random.Next(10000000, 99999999);
+        private string RandomTelephone => 
+            "06" + _random.Next(10000000, 99999999);
 
-        private string RandomMail => _mail[_random.Next(_mail.Count)];
+        private string RandomMail => 
+            _mail[_random.Next(_mail.Count)];
         
         // Générateur aléatoire de role
         private Role RandomRole

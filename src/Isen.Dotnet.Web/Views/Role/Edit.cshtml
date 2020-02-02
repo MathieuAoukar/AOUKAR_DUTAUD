@@ -1,0 +1,32 @@
+@{
+    ViewData["Title"] = "Rôle Edition";
+}
+@using Isen.Dotnet.Library.Model;
+@model Role;
+
+<h2>Création ou édition <small>d'un rôle</small></h2>
+<form class="form-group" asp-action="Edit">
+
+    <div class="row">
+        <div class="col-6">
+            <div class="form-group">
+                <label for="NomRole">Nom</label>
+                <input
+                    id="NomRole"
+                    type="text"
+                    class="form-control"
+                    placeholder="Type du role"
+                    asp-for="NomRole"
+                    value="@Model?.NomRole" />
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary">Valider</button>
+            <a class="btn btn-secondary" asp-action="Index">Annuler</a>
+        </div>
+    </div>
+
+</form> 

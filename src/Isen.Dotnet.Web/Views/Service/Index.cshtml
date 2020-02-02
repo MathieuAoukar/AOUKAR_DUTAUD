@@ -1,0 +1,25 @@
+@{
+    ViewData["Title"] = "List of services";
+}
+@using Isen.Dotnet.Library.Model;
+@model IEnumerable<Service>;
+<div>
+    <h1>Liste <small>des Services</small></h1>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Nom</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var service in Model)
+            {
+            <tr>
+                <th scope="row">@service.Id</th>
+                <td>@service.NomService</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
