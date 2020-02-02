@@ -15,5 +15,9 @@ namespace Isen.Dotnet.Web.Controllers
             ApplicationDbContext context) : base(logger, context)
         {
         }         
+
+        protected override IQueryable<Role> BaseQuery() =>
+            base.BaseQuery()
+                .OrderBy(r => r.NomRole);
     }
 }
