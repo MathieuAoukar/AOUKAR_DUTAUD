@@ -1,13 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Isen.Dotnet.Library.Services;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace Isen.Dotnet.Web
 
@@ -36,7 +31,7 @@ namespace Isen.Dotnet.Web
             }
 
             // l'exécuter
-            host.Run(); // Loop d'exécution et d'écoute du serveur web
+            host.Run(); 
 
             // Ceci ne s'exécute que quand le serveur web est arrêté
             Console.WriteLine("Program.Main.End");
