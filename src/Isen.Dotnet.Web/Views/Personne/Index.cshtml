@@ -1,150 +1,50 @@
 @{
-    ViewData["Title"] = "Edition d'un personne";
+    ViewData["Title"] = "Liste des personnes";
 }
 @using Isen.Dotnet.Library.Model;
-@using Isen.Dotnet.Library.Context;
-@model Personne;
-@inject ApplicationDbContext _context;
+@model IEnumerable<Personne>;
 
-<h2>Création ou édition <small>d'une personne</small></h2>
-<form class="form-group" asp-action="Edit">
+<div>
+    <h1>Liste <small>de toutes les personnes</small></h1>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Prénom</th>
+                <th scope="col">Date de naissance</th>
+                <th scope="col">Telephone</th>
+                <th scope="col">Mail</th>
+                <th scope="col">Role</th>
+                <th scope="col">Service</th>
+                <th scope="col">Action...</th>
+            </tr>
+        </thead>
 
-    <h3>Identité <small>de la personne</small></h3>
-    <div class="row">
-        <div class="col-6">
-            <div class="form-group">
-                <label for="Nom">Nom de famille</label>
-                <input
-                    id="Nom"
-                    type="text"
-                    class="form-control"
-                    placeholder="Nom de famille"
-                    asp-for="Nom"
-                    value="@Model?.Nom" />
-            </div>
-        </div>
-        <div class="col-6">
-            <div class="form-group">
-                <label for="Prenom">Prénom</label>
-                <input
-                    id="Prenom"
-                    type="text"
-                    class="form-control"
-                    placeholder="Prenom"
-                    asp-for="Prenom"
-                    value="@Model?.Prenom" />
-            </div>
-        </div>
-    </div>
-
-    @{
-        var dateTimeString = "";
-        if (Model?.Date_anniversaire != null) 
-            dateTimeString = Model.Date_anniversaire.Value.ToString("dd/MM/yyyy");
-    }
-
-    <div class="row">
-        <div class="col-6">
-            <div class="form-group">
-                <label for="Anniversaire">Date de naissance</label>
-                <input
-                    id="Anniversaire"
-                    type="text"
-                    class="form-control"
-                    placeholder="jj/mm/aaaa"
-                    asp-for="Date_anniversaire"
-                    value="@dateTimeString" />
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-6">
-            <div class="form-group">
-                <label for="Telephone">Téléphone</label>
-                <input
-                    id="Telephone"
-                    type="text"
-                    class="form-control"
-                    placeholder="06-..-..-..-.."
-                    asp-for="Telephone"
-                    value="@Model?.Telephone" />
-            </div>
-        </div>
-        <div class="col-6">
-            <div class="form-group">
-                <label for="Mail">Email</label>
-                <input
-                    id="Mail"
-                    type="text"
-                    class="form-control"
-                    placeholder="Email"
-                    asp-for="Mail"
-                    value="@Model?.Mail" />
-            </div>
-        </div>
-    </div>
-
-    <h3>Rôle <small>de la personne</small></h3>
-    <div class="row">
-        <div class="col-6">
-            <div class="form-group">   
-                <label for="TypeRole">Role</label>
-               @Html.DropDownListFor(
-                    // Quel est le champ du modèle que l'on 
-                    // met à jour avec cette liste ?
-                    p => p.TypeRoleId,
-                    // Liste des éléments
-                    new SelectList(
-                        // La liste
-                        _context.RoleCollection,
-                        // Le champ d'id
-                        "Id",
-                        // Le champ de libellé
-                        "NomRole"
-                    ),
-                    // Item par défaut
-                    "Sélectionnez un rôle...",
-                    // Classe CSS
-                    new { @class = "form-control" }
-                )
-            </div> 
-        </div>
-    </div>
-
-    <h3>Service <small>de la personne</small></h3>
-    <div class="row">
-        <div class="col-6">
-            <div class="form-group">
-                <label for="TypeService">Service</label>
-                @Html.DropDownListFor(
-                    // Quel est le champ du modèle que l'on 
-                    // met à jour avec cette liste ?
-                    p => p.TypeServiceId,
-                    // Liste des éléments
-                    new SelectList(
-                        // La liste
-                        _context.ServiceCollection,
-                        // Le champ d'id
-                        "Id",
-                        // Le champ de libellé
-                        "NomService"
-                    ),
-                    // Item par défaut
-                    "Sélectionnez un service...",
-                    // Classe CSS
-                    new { @class = "form-control" }
-                )
-            </div>
-        </div>
-    </div>
-
-        <div class="row">
-            <div class="col-12">
-                <button type="submit" class="btn btn-primary">Valider</button>
-                <a class="btn btn-secondary" asp-action="Index">Annuler</a>
-            </div>
-        </div>
-    </div>
-
-</form>  
+        <tbody>
+            @foreach(var personne in Model)
+            {
+            <tr>
+                <th scope="row">@personne.Id</th>
+                <td>@personne.Nom</td>
+                <td>@personne.Prenom</td>
+                <td>@personne.Date_anniversaire.Value.ToShortDateString() (@personne.Age ans)</td>
+                <td>@personne.Telephone</td>
+                <td>@personne.Mail</td>
+                <td>@personne.TypeRole?.NomRole</td>
+                <td>@personne.TypeService?.NomService</td>
+                <td>
+                    <a class="btn btn-outline-primary"
+                        asp-controller="Personne"
+                        asp-action="Edit"
+                        asp-route-id="@personne.Id">Modifier</a>
+                    <a class="btn btn-outline-danger"
+                        asp-controller="Personne"
+                        asp-action="Delete"
+                        asp-route-id="@personne.Id">Supprimer</a>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 namespace Isen.Dotnet.Library.Services
 {
     public class DataInitializer : IDataInitializer
-    { 
+    {
         private List<string> _firstNames => new List<string>
         {
             "Sang", 
@@ -21,6 +21,7 @@ namespace Isen.Dotnet.Library.Services
             "Louis",
             "Alicia"
         };
+
         private List<string> _lastNames => new List<string>
         {
             "Schuck",
@@ -30,16 +31,20 @@ namespace Isen.Dotnet.Library.Services
             "Lebrun",
             "Dutaud",
             "Sarrazin",
-            "Vu Dinh"
+            "Vu Dinh",
+            "Aoukar"
         };
 
-        private List<string> _mail => new List<string>
+        private List<string> _atMail => new List<string>
         {
             "gmail.com",
-            "yahoo.com",
-            "live.fr",
-            "hotmailS.com",
-            "orange.fr"
+            "caramail.com",
+            "hotmail.fr",
+            "isen.yncrea.fr",
+            "live.com",
+            "soprasteria.com",
+            "yncrea.fr",
+            "yahoo.com"
         };
 
         // Générateur aléatoire
@@ -60,98 +65,102 @@ namespace Isen.Dotnet.Library.Services
         // Générateur de prénom
         private string RandomFirstName => 
             _firstNames[_random.Next(_firstNames.Count)];
+
         // Générateur de nom
         private string RandomLastName => 
             _lastNames[_random.Next(_lastNames.Count)];
-
-        private string RandomTelephone => 
-            "06" + _random.Next(10000000, 99999999);
-
-        private string RandomMail => 
-            _mail[_random.Next(_mail.Count)];
-        
-        // Générateur aléatoire de role
-        private Role RandomRole
-        {
-            get
-            {
-                var roles = _context.RoleCollection.ToList();
-                return roles[_random.Next(roles.Count)];
-            }
-        }
-
-        // Générateur aléatoire de services
+    
         private Service RandomService
         {
             get
             {
                 var services = _context.ServiceCollection.ToList();
                 return services[_random.Next(services.Count)];
+
+           }
+        }
+
+        private List<Role> RandomRoleSequence
+        {
+            get
+            {
+                var roles = _context.RoleCollection.ToList();
+                roles.OrderBy(x => _random.Next()).ToList();
+                List<Role> roleSequence = roles.OrderBy(x => _random.Next()).ToList().GetRange(0, _random.Next(roles.Count-1)+1);
+                return roleSequence;
             }
         }
 
-        // Générateur aléatoire de dates
+        private string RandomPhoneNumber => "06" + _random.Next(10000000, 99999999);
+        private string RandomMail =>  _atMail[_random.Next(_atMail.Count)];
+
+        // Générateur de date
         private DateTime RandomDate =>
             new DateTime(_random.Next(1980, 2010), 1, 1)
                 .AddDays(_random.Next(0, 365));
-
-        // Afin de générer des personnes 
-         private Personne RandomPersonne
+        // Générateur de personne
+        private Personne RandomPerson
         {
-            get 
+            get
             {
-                var prenom = RandomFirstName;
-                var nom = RandomLastName;
-                var personne = new Personne() {
-                    Prenom = prenom,
-                    Nom = nom,
+                var firstName = RandomFirstName;
+                var lastName = RandomLastName;
+                var person =  new Personne() {
+                    Prenom = firstName,
+                    Nom = lastName,
                     Date_anniversaire = RandomDate,
-                    Telephone = RandomTelephone,
-                    Mail = $"{prenom}.{nom}@{RandomMail}",
-                    TypeRole = RandomRole,
-                    TypeService = RandomService
+                    Telephone = RandomPhoneNumber,
+                    Mail = $"{firstName}.{lastName}@{RandomMail}",
+                    TypeService = RandomService,
+                    RelationRolePersonne = new MyCollection<RelationRolePersonne>()
                 };
-
-                return personne;
+                
+                var roles = RandomRoleSequence;
+                foreach (var role in roles)
+                {
+                    var rolePerson = new RelationRolePersonne() { 
+                        Personne = person,
+                        Role = role
+                    };
+                    person.RelationRolePersonne.Add(rolePerson);
+                    role.RelationRolePersonne.Add(rolePerson);
+                }
+                
+                return person;
             }
-            
         }
-
+        // Générateur de personnes
         public List<Personne> GetPersonnes(int size)
         {
-            var personnes = new List<Personne>();
+            var persons = new List<Personne>();
             for(var i = 0 ; i < size ; i++)
             {
-                personnes.Add(RandomPersonne);
+                persons.Add(RandomPerson);
             }
-            return personnes;
+            return persons;
+        }
+        public List<Service> GetServices()
+        {
+            return new List<Service>
+            {
+                new Service { NomService = "Marketing"},
+                new Service { NomService = "Production"},
+                new Service { NomService = "Technique"},
+                new Service { NomService = "Direction"},
+                new Service { NomService = "Ressources humaines"},
+                new Service { NomService = "Recherche"},
+                new Service { NomService = "Design"}
+            };
         }
 
         public List<Role> GetRoles()
         {
             return new List<Role>
             {
-                new Role { NomRole = "Utilisateur" },
-                new Role { NomRole = "Manager" },
-                new Role { NomRole = "Administrateur" },
-                new Role { NomRole = "PDG" },
-                new Role { NomRole = "Technicien" },
-                new Role { NomRole = "Ingenieur" },
-                new Role { NomRole = "Client" }
-            };
-        }
-
-        public List<Service> GetServices()
-        {
-            return new List<Service>
-            {
-                new Service { NomService = "Marketing" },
-                new Service { NomService = "Ressources Humaines"},
-                new Service { NomService = "Production"},
-                new Service { NomService = "Management"},
-                new Service { NomService = "Direction"},
-                new Service { NomService = "Technique"},
-                new Service { NomService = "Développement"}
+                new Role { NomRole = "Utilisateur", RelationRolePersonne = new MyCollection<RelationRolePersonne>() },
+                new Role { NomRole = "Administrateur", RelationRolePersonne = new MyCollection<RelationRolePersonne>() },
+                new Role { NomRole = "Manager", RelationRolePersonne = new MyCollection<RelationRolePersonne>() },
+                new Role { NomRole = "Invité", RelationRolePersonne = new MyCollection<RelationRolePersonne>() }
             };
         }
 
@@ -170,28 +179,32 @@ namespace Isen.Dotnet.Library.Services
 
         public void AddPersonnes()
         {
-            _logger.LogWarning("Adding personnes");
-            if (_context.PersonneCollection.Any()) return;   //on vérifie si la personne existe déjà dans la bdd
-            var personnes = GetPersonnes(50);   // on génère cette personne
-            _context.AddRange(personnes);   // On l'ajoute au context
-            _context.SaveChanges(); // on sauvegarde
-        }
-
-        public void AddRoles()
-        {
-            _logger.LogWarning("Adding roles");
-            if (_context.RoleCollection.Any()) return;  
-            var roles = GetRoles();
-            _context.AddRange(roles);
+            _logger.LogWarning("Adding persons...");
+            // S'il y a déjà des personnes dans la base -> ne rien faire
+            if (_context.PersonneCollection.Any()) return;
+            // Générer des personnes
+            var persons = GetPersonnes(50);
+            // Les ajouter au contexte
+            _context.AddRange(persons);
+            // Sauvegarder le contexte
             _context.SaveChanges();
         }
 
         public void AddServices()
         {
-            _logger.LogWarning("Adding services");
+            _logger.LogWarning("Adding services...");
             if (_context.ServiceCollection.Any()) return;
             var services = GetServices();
             _context.AddRange(services);
+            _context.SaveChanges();
+        }
+
+        public void AddRoles()
+        {
+            _logger.LogWarning("Adding roles...");
+            if (_context.RoleCollection.Any()) return;
+            var roles = GetRoles();
+            _context.AddRange(roles);
             _context.SaveChanges();
         }
     }

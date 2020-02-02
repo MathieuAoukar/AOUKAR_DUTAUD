@@ -8,9 +8,8 @@ namespace Isen.Dotnet.Library.Model
         
         public override string ToString() => $"{NomRole}";
 
-        /*
+        
         public MyCollection<RelationRolePersonne> RelationRolePersonne {get;set;}
-        public override string ToString() => NomRole;
 
          public string Personne() {
             var sb = new StringBuilder();
@@ -21,7 +20,7 @@ namespace Isen.Dotnet.Library.Model
                 sb.Append($"{RelationRolePersonne[i]?.Personne?.Prenom} {RelationRolePersonne[i]?.Personne?.Nom}");
             }
             return sb.ToString();
-        }*/
+        }
 
     }
 }
