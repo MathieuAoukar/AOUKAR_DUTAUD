@@ -1,5 +1,11 @@
-###Mathieu AOUKAR ET Boris DUTAUD
+#Projet dotnet Mathieu AOUKAR et Boris DUTAUD
 
-Projet DOTNET
+### Problèmes rencontrés 
 
-![image](https://user-images.githubusercontent.com/56018946/73612504-b042fd00-45ec-11ea-8639-45b1e887f70d.png)
+Lors de l'exécution de la commande: "dotnet run" dans le repertoire src/Isen.Dotnet.Web/, nous obtenons l'erreure suivante.
+
+
+
+
+Après avoir vérifier tous nos fichiers, nous n'avons pas pu trouver notre problème et donc pas pu vérifier que notre page web fonctionne correctement.
+Cependant, nous nous sommes basés sur votre GITHUB et nous avons quand même développé la partie "html".
