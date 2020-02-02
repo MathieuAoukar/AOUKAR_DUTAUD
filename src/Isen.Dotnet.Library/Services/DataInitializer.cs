@@ -166,7 +166,7 @@ namespace Isen.Dotnet.Library.Services
 
         public void AddPersonnes()
         {
-            _logger.LogWarning("Adding personnes...");
+            _logger.LogWarning("Adding personnes");
             if (_context.PersonneCollection.Any()) return;   //on vérifie si la personne existe déjà dans la bdd
             var personnes = GetPersonnes(50);   // on génère cette personne
             _context.AddRange(personnes);   // On l'ajoute au context
@@ -175,7 +175,7 @@ namespace Isen.Dotnet.Library.Services
 
         public void AddRoles()
         {
-            _logger.LogWarning("Adding roles...");
+            _logger.LogWarning("Adding roles");
             if (_context.RoleCollection.Any()) return;  
             var roles = GetRoles();
             _context.AddRange(roles);
@@ -184,7 +184,7 @@ namespace Isen.Dotnet.Library.Services
 
         public void AddServices()
         {
-            _logger.LogWarning("Adding services...");
+            _logger.LogWarning("Adding services");
             if (_context.ServiceCollection.Any()) return;
             var services = GetServices();
             _context.AddRange(services);

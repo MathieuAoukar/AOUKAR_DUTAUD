@@ -2,9 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Isen.Dotnet.Library.Context;
+using Isen.Dotnet.Library.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -23,7 +26,20 @@ namespace Isen.Dotnet.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            Console.WriteLine("Startup.ConfigureServices");
+            // Pipeline des services injectés: +SQLite
+            services.AddDbContext<ApplicationDbContext>(
+                // Fonction anonyme (lambda) pour la config
+                builder => 
+                // Indiquer qu'on se base sur SQLite
+                builder.UseSqlite(
+                    // Passer la chaine de connexion SQLite
+                    Configuration.GetConnectionString("DefaultConnection")));
+
+            services
+                .AddControllersWithViews()
+                .AddRazorRuntimeCompilation();
+            services.AddScoped<IDataInitializer, DataInitializer>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
