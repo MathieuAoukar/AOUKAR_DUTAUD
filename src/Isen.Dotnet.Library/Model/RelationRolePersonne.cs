@@ -9,7 +9,7 @@ namespace Isen.Dotnet.Library.Model
     {
         public Personne Personne { get;set; }
         public int PersonneId { get;set; }
-        public Role NomRole { get;set; }
+        public Role Role { get;set; }
         public int RoleId { get;set; }
     }
 }

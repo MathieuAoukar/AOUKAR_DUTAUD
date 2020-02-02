@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text;
 
 namespace Isen.Dotnet.Library.Model
 {
@@ -19,16 +20,25 @@ namespace Isen.Dotnet.Library.Model
         public Service TypeService {get;set;}
         public int? TypeServiceId {get;set;}
 
+        public MyCollection<RelationRolePersonne> RelationRolePersonne {get;set;}
+
         [NotMapped] // afin de ne pas générer ce champ dans la bdd
         public int? Age => Date_anniversaire.HasValue ?
-            // pour connaitre le nombre de jours entre aujourd'hui et le jours de naissance
             (int)((DateTime.Now - Date_anniversaire.Value).TotalDays / 365) :
-            // si nous n'avons pas de date de naissance alors: un entier null
             new int?();
         
         public override string ToString() =>
             $"{Nom} {Prenom} | {Date_anniversaire} ({Age}) | {TypeRole} / {TypeService}";
-    
-    }
 
+        public string Roles() {
+        var sb = new StringBuilder();
+        sb.Append(RelationRolePersonne[0]?.Role?.NomRole);
+        for(var i = 1; i < RelationRolePersonne?.Count; i++)
+        {
+            sb.Append(", ");
+            sb.Append(RelationRolePersonne[i]?.Role?.NomRole);
+        }
+        return sb.ToString();
+        }
+    }
 }
